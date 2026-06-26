@@ -1,0 +1,133 @@
+{
+  "organization": "Harbor Post-Acute Group",
+  "facilities": [
+    {
+      "id": "fac_lakeside",
+      "name": "Lakeside Skilled Nursing",
+      "state": "IL"
+    },
+    {
+      "id": "fac_ridgeview",
+      "name": "Ridgeview Transitional Care",
+      "state": "IN"
+    }
+  ],
+  "users": [
+    {
+      "email": "owner@appealforge.local",
+      "role": "OWNER",
+      "name": "Priya Shah"
+    },
+    {
+      "email": "ur@appealforge.local",
+      "role": "CLINICAL_REVIEWER",
+      "name": "Maya Patel"
+    },
+    {
+      "email": "admissions@appealforge.local",
+      "role": "ADMISSIONS_USER",
+      "name": "Ari Singh"
+    },
+    {
+      "email": "audit@appealforge.local",
+      "role": "READ_ONLY_AUDITOR",
+      "name": "Jordan Lee"
+    }
+  ],
+  "cases": [
+    {
+      "id": "case_snf_admission_001",
+      "patientSyntheticLabel": "Patient A",
+      "facilityId": "fac_lakeside",
+      "planName": "Harbor MA Complete",
+      "serviceType": "SNF Admission",
+      "requestType": "admission",
+      "status": "NEEDS_EVIDENCE_REVIEW",
+      "denialReason": "Does not meet skilled level of care",
+      "denialDate": "2026-06-22",
+      "appealDeadline": "2026-08-26",
+      "evidence": [
+        {
+          "criterion": "Daily skilled nursing need",
+          "summary": "IV antibiotic administration and wound dressing changes require skilled nursing monitoring.",
+          "document": "Discharge Summary",
+          "page": 3,
+          "quote": "Patient requires IV cefazolin every 8 hours through 06/30 and daily skilled wound assessment."
+        },
+        {
+          "criterion": "Skilled therapy need",
+          "summary": "Patient needs PT/OT for transfers and gait due to moderate assistance needs.",
+          "document": "Therapy Evaluation",
+          "page": 4,
+          "quote": "Patient requires moderate assistance for transfers and is unable to ambulate safely without skilled cueing."
+        }
+      ],
+      "gaps": [
+        "Latest wound measurement note not found.",
+        "Physician expedited appeal statement not uploaded."
+      ]
+    },
+    {
+      "id": "case_snf_continued_002",
+      "patientSyntheticLabel": "Patient B",
+      "facilityId": "fac_ridgeview",
+      "planName": "Northstar MA",
+      "serviceType": "SNF Continued Stay",
+      "requestType": "continued_stay",
+      "status": "PACKET_DRAFTED",
+      "denialReason": "Custodial care",
+      "denialDate": "2026-06-20",
+      "appealDeadline": "2026-08-24",
+      "evidence": [
+        {
+          "criterion": "Ongoing skilled therapy",
+          "summary": "Patient has measurable therapy goals and still needs skilled gait and transfer training.",
+          "document": "PT Progress Note",
+          "page": 2,
+          "quote": "Patient progressed from max assist to mod assist for sit-to-stand but remains unsafe for independent transfers."
+        },
+        {
+          "criterion": "Medication complexity",
+          "summary": "Anticoagulation monitoring requires skilled nursing assessment.",
+          "document": "Nursing Note",
+          "page": 5,
+          "quote": "Nursing to monitor anticoagulation precautions and report signs of bleeding or mental status change."
+        }
+      ],
+      "gaps": [
+        "Updated discharge plan barrier note not found."
+      ]
+    },
+    {
+      "id": "case_irf_admission_003",
+      "patientSyntheticLabel": "Patient C",
+      "facilityId": "fac_lakeside",
+      "planName": "Cascade MA Choice",
+      "serviceType": "IRF Admission",
+      "requestType": "admission",
+      "status": "EVIDENCE_MAPPING",
+      "denialReason": "Could be treated at lower level of care",
+      "denialDate": "2026-06-18",
+      "appealDeadline": "2026-08-22",
+      "evidence": [
+        {
+          "criterion": "Multidisciplinary rehab need",
+          "summary": "Patient requires coordinated PT, OT, and speech therapy after acute neurologic event.",
+          "document": "Rehab Consult",
+          "page": 2,
+          "quote": "Patient demonstrates new deficits requiring coordinated PT, OT, and speech therapy with physician oversight."
+        },
+        {
+          "criterion": "Medical supervision",
+          "summary": "Comorbid conditions require close physician management during rehabilitation.",
+          "document": "H&P",
+          "page": 6,
+          "quote": "Rehabilitation course complicated by labile blood pressure and medication adjustments requiring close medical supervision."
+        }
+      ],
+      "gaps": [
+        "Therapy tolerance note needs reviewer confirmation."
+      ]
+    }
+  ]
+}

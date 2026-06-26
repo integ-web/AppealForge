@@ -1,0 +1,75 @@
+{
+  "snf_admission_skilled_level": [
+    {
+      "label": "Daily skilled nursing need",
+      "description": "Evidence that nursing interventions require skilled personnel and daily monitoring.",
+      "requiredEvidence": [
+        "intervention",
+        "frequency",
+        "clinical reason",
+        "date"
+      ]
+    },
+    {
+      "label": "Skilled therapy need",
+      "description": "Evidence of PT/OT/SLP need that cannot be safely delivered at a lower level.",
+      "requiredEvidence": [
+        "functional deficit",
+        "therapy frequency",
+        "skilled cueing/assistance",
+        "goals"
+      ]
+    },
+    {
+      "label": "Lower level unsafe or inadequate",
+      "description": "Evidence that home/lower-level care would not meet patient needs safely.",
+      "requiredEvidence": [
+        "safety risk",
+        "support limitations",
+        "clinical complexity"
+      ]
+    }
+  ],
+  "snf_continued_stay_custodial": [
+    {
+      "label": "Ongoing skilled need",
+      "description": "Evidence that services are skilled, not merely custodial.",
+      "requiredEvidence": [
+        "skilled intervention",
+        "ongoing goals",
+        "frequency",
+        "clinical risk"
+      ]
+    },
+    {
+      "label": "Therapy progress or skilled maintenance",
+      "description": "Evidence of measurable progress, skilled therapy need, or clinically justified continued services.",
+      "requiredEvidence": [
+        "progress",
+        "goals",
+        "remaining deficits"
+      ]
+    }
+  ],
+  "irf_lower_level": [
+    {
+      "label": "Multidisciplinary rehab need",
+      "description": "Evidence that patient requires coordinated intensive rehabilitation disciplines.",
+      "requiredEvidence": [
+        "PT",
+        "OT",
+        "SLP if applicable",
+        "coordination need"
+      ]
+    },
+    {
+      "label": "Physician oversight need",
+      "description": "Evidence that medical complexity requires IRF-level physician management.",
+      "requiredEvidence": [
+        "comorbidities",
+        "risk",
+        "medication/monitoring complexity"
+      ]
+    }
+  ]
+}

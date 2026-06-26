@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>AppealForge PAC — Static UI Direction</title>
+  <style>
+    :root{
+      --ink:#08111F;--ink2:#0D1B2A;--harbor:#123047;--harbor2:#174866;
+      --teal:#00A88E;--teal2:#5EEAD4;--amber:#F6B44B;--coral:#E76F51;--green:#2FBF71;
+      --paper:#F8F5EF;--paper2:#EFE8DC;--mist:#DCE5EA;--slate:#8AA0AE;--white:#fff;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;color:var(--white);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(94,234,212,.18), transparent 32%),
+        radial-gradient(circle at 92% 5%, rgba(246,180,75,.16), transparent 24%),
+        linear-gradient(145deg,var(--ink),var(--ink2));
+      min-height:100vh;
+    }
+    .wrap{max-width:1400px;margin:0 auto;padding:32px}
+    .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+    .brand{display:flex;gap:14px;align-items:center}
+    .brand img{width:48px;height:48px;border-radius:14px}
+    .brand h1{margin:0;font-size:18px;letter-spacing:.02em}
+    .brand span{display:block;color:var(--slate);font-size:12px;margin-top:2px}
+    .pill{border:1px solid rgba(220,229,234,.18);background:rgba(18,48,71,.7);border-radius:999px;padding:8px 13px;color:#DCE5EA;font-size:12px}
+    .hero{display:grid;grid-template-columns:1.04fr .96fr;gap:24px;margin-bottom:24px}
+    .card{
+      background:linear-gradient(180deg,rgba(18,48,71,.88),rgba(13,27,42,.92));
+      border:1px solid rgba(220,229,234,.12);
+      border-radius:28px;
+      box-shadow:0 22px 80px rgba(0,0,0,.25);
+      overflow:hidden;
+    }
+    .login{padding:42px;position:relative}
+    .login:before{content:"";position:absolute;inset:-1px;pointer-events:none;background:radial-gradient(circle at 82% 0%, rgba(94,234,212,.2), transparent 34%)}
+    h2{font-size:48px;line-height:1.02;letter-spacing:-.05em;margin:0 0 18px}
+    p{color:#B7C7D0;line-height:1.6}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:32px}
+    .stat{background:rgba(8,17,31,.52);border:1px solid rgba(220,229,234,.11);border-radius:18px;padding:18px}
+    .stat b{display:block;font-size:28px;color:#fff}
+    .stat span{font-size:12px;color:var(--slate)}
+    .panel{padding:28px}
+    label{display:block;color:#DCE5EA;font-size:13px;margin:18px 0 8px}
+    input{width:100%;background:rgba(8,17,31,.5);border:1px solid rgba(220,229,234,.18);border-radius:14px;padding:14px 15px;color:#fff;outline:none}
+    input:focus{border-color:rgba(94,234,212,.72);box-shadow:0 0 0 4px rgba(94,234,212,.1)}
+    button{border:0;border-radius:999px;padding:14px 18px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--teal),#067865);box-shadow:0 16px 40px rgba(0,168,142,.23);width:100%;margin-top:22px}
+    .trust{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+    .trust span{font-size:12px;color:#CFE9E5;border:1px solid rgba(94,234,212,.18);background:rgba(0,168,142,.08);border-radius:999px;padding:7px 9px}
+    .grid{display:grid;grid-template-columns:280px 1fr 360px;gap:20px;align-items:start}
+    .side{padding:18px;min-height:720px}
+    .navitem{padding:12px 14px;border-radius:14px;color:#BFD0D9;margin:4px 0}
+    .navitem.active{background:linear-gradient(90deg,rgba(0,168,142,.22),rgba(94,234,212,.04));color:#fff;border:1px solid rgba(94,234,212,.14)}
+    .main{padding:24px}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .kpi{background:rgba(8,17,31,.45);border:1px solid rgba(220,229,234,.1);border-radius:20px;padding:17px}
+    .kpi strong{display:block;font-size:28px}
+    .kpi small{color:var(--slate)}
+    .case{display:grid;grid-template-columns:1.4fr .8fr .8fr .7fr;gap:14px;align-items:center;background:rgba(8,17,31,.38);border:1px solid rgba(220,229,234,.1);border-radius:18px;padding:16px;margin-top:12px}
+    .case h4{margin:0 0 5px}
+    .case small{color:var(--slate)}
+    .badge{display:inline-flex;border-radius:999px;padding:6px 10px;font-size:12px;border:1px solid rgba(220,229,234,.14)}
+    .urgent{background:rgba(246,180,75,.14);border-color:rgba(246,180,75,.42);color:#FFD493}
+    .review{background:rgba(94,234,212,.1);border-color:rgba(94,234,212,.28);color:#BFFBF2}
+    .evidence{padding:22px}
+    .eitem{border-left:4px solid var(--teal);background:rgba(8,17,31,.38);border-radius:16px;padding:16px 16px 16px 18px;margin:12px 0;border-top:1px solid rgba(220,229,234,.09);border-right:1px solid rgba(220,229,234,.09);border-bottom:1px solid rgba(220,229,234,.09)}
+    .eitem.warn{border-left-color:var(--amber)}
+    .eitem.danger{border-left-color:var(--coral)}
+    .quote{font-family:Georgia,serif;background:var(--paper);color:#1d2429;border-radius:18px;padding:24px;box-shadow:0 22px 80px rgba(8,17,31,.25)}
+    .quote h3{margin-top:0;color:#122}
+    .quote mark{background:rgba(246,180,75,.35);padding:2px 4px;border-radius:4px}
+    .paper{background:var(--paper);color:#1d2429;border-radius:24px;padding:34px;box-shadow:0 22px 90px rgba(0,0,0,.28);font-family:Georgia,serif}
+    .paper h3{font-family:Georgia,serif;margin-top:0;color:#111}
+    .section-title{display:flex;justify-content:space-between;align-items:end;margin:28px 0 12px}
+    .section-title h3{margin:0;font-size:20px}
+    @media(max-width:1000px){.hero,.grid{grid-template-columns:1fr}.stats,.kpis{grid-template-columns:1fr 1fr}.side{min-height:auto}.case{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand"><img src="../assets/logo.svg"/><div><h1>AppealForge PAC</h1><span>Midnight clinical atelier UI direction</span></div></div>
+      <div class="pill">Synthetic demo · no live PHI</div>
+    </div>
+
+    <div class="hero">
+      <section class="card login">
+        <h2>Turn denials into evidence-ready appeal packets.</h2>
+        <p>Source-cited appeal workflow for post-acute Medicare Advantage teams. Built for urgent denials, clinical review, and packet confidence.</p>
+        <div class="stats">
+          <div class="stat"><b>95%</b><span>SNF appealed denials overturned in OIG sample</span></div>
+          <div class="stat"><b>10m</b><span>Target time to draft packet</span></div>
+          <div class="stat"><b>0</b><span>Unsupported clinical claims allowed</span></div>
+        </div>
+        <div class="trust"><span>Citation-only drafts</span><span>Human approval required</span><span>Audit-ready</span></div>
+      </section>
+      <section class="card panel">
+        <h3 style="margin-top:0">Enter workspace</h3>
+        <label>Email</label><input value="demo@appealforge.local"/>
+        <label>Password</label><input type="password" value="synthetic"/>
+        <button>Enter demo workspace</button>
+        <p style="font-size:13px;margin-top:22px">Do not upload live PHI unless production onboarding, BAAs, and retention settings are complete.</p>
+      </section>
+    </div>
+
+    <div class="grid">
+      <aside class="card side">
+        <div class="navitem active">Appeal Queue</div>
+        <div class="navitem">Evidence Maps</div>
+        <div class="navitem">Packet Builder</div>
+        <div class="navitem">Outcomes</div>
+        <div class="navitem">Audit Trail</div>
+        <div class="navitem">Settings</div>
+      </aside>
+
+      <main class="card main">
+        <div class="section-title"><h3>Appeal command center</h3><span class="badge urgent">3 due within 72h</span></div>
+        <div class="kpis">
+          <div class="kpi"><strong>18</strong><small>Open denials</small></div>
+          <div class="kpi"><strong>7</strong><small>Needs evidence</small></div>
+          <div class="kpi"><strong>5</strong><small>Packets drafted</small></div>
+          <div class="kpi"><strong>82%</strong><small>Historical win rate</small></div>
+        </div>
+        <div class="case">
+          <div><h4>SNF admission · does not meet skilled level</h4><small>Harbor MA Complete · Lakeside SNF</small></div>
+          <span class="badge urgent">Deadline: 41h</span>
+          <span class="badge review">Needs clinical review</span>
+          <small>Owner: A. Singh</small>
+        </div>
+        <div class="case">
+          <div><h4>Continued stay · custodial care</h4><small>Northstar MA · Ridgeview</small></div>
+          <span class="badge">6 days left</span>
+          <span class="badge review">Packet drafted</span>
+          <small>Owner: M. Patel</small>
+        </div>
+        <div class="case">
+          <div><h4>IRF admission · lower level appropriate</h4><small>Cascade MA · Metro IRF</small></div>
+          <span class="badge">12 days left</span>
+          <span class="badge">Evidence map</span>
+          <small>Owner: C. Rao</small>
+        </div>
+
+        <div class="section-title"><h3>Evidence map</h3><span class="pill">8/11 criteria supported</span></div>
+        <div class="evidence">
+          <div class="eitem"><b>Daily skilled nursing need</b><p>IV antibiotics and wound care require skilled monitoring. <span class="badge review">2 citations</span></p></div>
+          <div class="eitem warn"><b>Therapy need</b><p>PT/OT deficits found, but latest therapy progress note is missing. <span class="badge urgent">Gap</span></p></div>
+          <div class="eitem danger"><b>Lower level unsafe</b><p>No home safety assessment found. Add source or remove claim. <span class="badge">Blocked</span></p></div>
+        </div>
+      </main>
+
+      <aside class="card panel">
+        <div class="quote">
+          <h3>Source quote</h3>
+          <p><b>Therapy Evaluation · page 4</b></p>
+          <p>"Patient requires <mark>moderate assistance for transfers</mark> and is unable to ambulate safely without skilled cueing."</p>
+          <p style="font-family:Inter,system-ui;color:#59646b;font-size:13px">Supports: skilled therapy need, fall risk, lower-level-of-care rebuttal.</p>
+        </div>
+        <div style="height:20px"></div>
+        <div class="paper">
+          <h3>Packet preview</h3>
+          <p>Re: Request for expedited reconsideration of denied SNF admission.</p>
+          <p>The denial states the requested SNF admission does not meet skilled level of care. The attached evidence supports daily skilled nursing and therapy needs...</p>
+          <p style="font-size:13px;color:#6b5f4f">Draft · physician review required · citations visible in final packet</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

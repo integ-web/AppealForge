@@ -1,0 +1,12 @@
+Synthetic Clinical Packet Excerpt
+
+Discharge Summary — Page 3
+Patient requires IV cefazolin every 8 hours through 06/30 and daily skilled wound assessment. Patient is medically stable for transfer to skilled nursing facility with ongoing nursing and therapy needs.
+
+Therapy Evaluation — Page 4
+Patient requires moderate assistance for transfers and is unable to ambulate safely without skilled cueing. Recommend continued skilled PT/OT five times weekly to address mobility, transfer safety, and ADL deficits.
+
+Nursing Note — Page 5
+Dressing change performed using sterile technique. Patient requires monitoring for wound drainage, erythema, and tolerance of antibiotic therapy.
+
+This synthetic excerpt is for demo use only and contains no real PHI.

@@ -1,0 +1,123 @@
+openapi: 3.0.3
+info:
+  title: AppealForge PAC API
+  version: 0.1.0
+  description: API contract for post-acute MA denial appeal packet workflow.
+servers:
+  - url: /api
+paths:
+  /cases:
+    get:
+      summary: List cases scoped to the user's organization.
+      responses:
+        "200":
+          description: Case list
+    post:
+      summary: Create a new authorization denial case.
+      responses:
+        "201":
+          description: Created case
+  /cases/{caseId}:
+    get:
+      summary: Get case overview.
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Case overview }
+  /cases/{caseId}/documents:
+    post:
+      summary: Create document metadata and upload URL.
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "201": { description: Document created }
+  /cases/{caseId}/parse-denial:
+    post:
+      summary: Run denial parser.
+      responses:
+        "202": { description: Parser job queued }
+  /cases/{caseId}/denial-finding/confirm:
+    post:
+      summary: Confirm or edit denial finding.
+      responses:
+        "200": { description: Denial finding confirmed }
+  /cases/{caseId}/evidence-map:
+    get:
+      summary: Get evidence map.
+      responses:
+        "200": { description: Evidence map }
+    post:
+      summary: Generate evidence map.
+      responses:
+        "202": { description: Evidence generation queued }
+  /evidence-items/{evidenceItemId}/review:
+    post:
+      summary: Update reviewer status.
+      responses:
+        "200": { description: Evidence reviewed }
+  /cases/{caseId}/packet:
+    post:
+      summary: Generate packet draft.
+      responses:
+        "202": { description: Packet job queued }
+    get:
+      summary: Get latest packet version.
+      responses:
+        "200": { description: Packet version }
+  /packet-versions/{packetVersionId}/approve:
+    post:
+      summary: Approve packet version.
+      responses:
+        "200": { description: Packet approved }
+  /packet-versions/{packetVersionId}/export:
+    post:
+      summary: Export packet PDF.
+      responses:
+        "202": { description: Export queued }
+  /cases/{caseId}/outcome:
+    post:
+      summary: Record appeal outcome.
+      responses:
+        "200": { description: Outcome recorded }
+  /cases/{caseId}/audit-events:
+    get:
+      summary: Get audit stream for case.
+      responses:
+        "200": { description: Audit events }
+components:
+  schemas:
+    Citation:
+      type: object
+      required: [documentId, pageNumber, quote]
+      properties:
+        documentId: { type: string }
+        pageNumber: { type: integer }
+        quote: { type: string }
+    EvidenceItem:
+      type: object
+      required: [id, criterionId, documentId, pageNumber, quote, normalizedSummary, confidence, reviewerStatus]
+      properties:
+        id: { type: string }
+        criterionId: { type: string }
+        documentId: { type: string }
+        pageNumber: { type: integer }
+        quote: { type: string }
+        normalizedSummary: { type: string }
+        confidence: { type: number }
+        reviewerStatus:
+          type: string
+          enum: [AI_DRAFT, STAFF_REVIEWED, CLINICAL_REVIEWED, PHYSICIAN_APPROVED, REJECTED]
+    PacketVersion:
+      type: object
+      properties:
+        id: { type: string }
+        versionNumber: { type: integer }
+        status: { type: string }
+        packetMarkdown: { type: string }
+        pdfStorageKey: { type: string }

@@ -1,0 +1,266 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id          String       @id
+  name        String
+  createdAt   DateTime     @default(now())
+  facilities  Facility[]
+  users       User[]
+  patients    Patient[]
+  cases       AuthCase[]
+  auditEvents AuditEvent[]
+}
+
+model Facility {
+  id             String       @id
+  organizationId String
+  name           String
+  state          String?
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  cases          AuthCase[]
+
+  @@index([organizationId])
+}
+
+model User {
+  id             String       @id
+  organizationId String
+  email          String       @unique
+  name           String?
+  role           String
+  mfaEnabled     Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  auditEvents    AuditEvent[]
+
+  @@index([organizationId])
+}
+
+model Patient {
+  id                  String       @id
+  organizationId      String
+  mrnHash             String?
+  encryptedName       String?
+  encryptedDob        String?
+  encryptedMedicareId String?
+  syntheticLabel      String?
+  createdAt           DateTime     @default(now())
+  organization        Organization @relation(fields: [organizationId], references: [id])
+  cases               AuthCase[]
+
+  @@index([organizationId])
+}
+
+model AuthCase {
+  id                 String             @id
+  organizationId     String
+  facilityId         String
+  patientId          String
+  serviceType        String
+  planName           String
+  requestType        String
+  status             String             @default("NEW")
+  denialReason       String
+  denialDate         DateTime?
+  appealDeadlineAt   DateTime?
+  expeditedCandidate Boolean            @default(false)
+  assignedOwnerId    String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  organization       Organization       @relation(fields: [organizationId], references: [id])
+  facility           Facility           @relation(fields: [facilityId], references: [id])
+  patient            Patient            @relation(fields: [patientId], references: [id])
+  documents          Document[]
+  denialFindings     DenialFinding[]
+  criteria           Criterion[]
+  evidenceItems      EvidenceItem[]
+  evidenceGaps       EvidenceGap[]
+  packetVersions     PacketVersion[]
+  communicationLogs  CommunicationLog[]
+  appealOutcomes     AppealOutcome[]
+
+  @@index([organizationId])
+  @@index([facilityId])
+  @@index([patientId])
+  @@index([status])
+  @@index([appealDeadlineAt])
+}
+
+model Document {
+  id              String          @id
+  caseId          String
+  docType         String          @default("OTHER")
+  title           String
+  filename        String
+  storageKey      String
+  sha256          String
+  pageCount       Int?
+  extractionState String          @default("pending")
+  uploadedBy      String?
+  createdAt       DateTime        @default(now())
+  case            AuthCase        @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  pages           ExtractedPage[]
+  evidenceItems   EvidenceItem[]
+
+  @@index([caseId])
+  @@index([docType])
+}
+
+model ExtractedPage {
+  id                   String   @id
+  documentId           String
+  pageNumber           Int
+  text                 String
+  extractionConfidence Float?
+  createdAt            DateTime @default(now())
+  document             Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, pageNumber])
+  @@index([documentId])
+}
+
+model DenialFinding {
+  id                 String   @id
+  caseId             String
+  denialReason       String
+  payerRationale     String?
+  appealInstructions String?
+  parsedJson         String
+  reviewerConfirmed  Boolean  @default(false)
+  sourceCitationJson String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  case               AuthCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  @@index([caseId])
+}
+
+model Criterion {
+  id                   String         @id
+  caseId               String
+  label                String
+  description          String
+  sourceType           String
+  sourceReference      String?
+  requiredEvidenceJson String
+  priority             String         @default("medium")
+  createdAt            DateTime       @default(now())
+  case                 AuthCase       @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  evidenceItems        EvidenceItem[]
+  evidenceGaps         EvidenceGap[]
+
+  @@index([caseId])
+}
+
+model EvidenceItem {
+  id                String    @id
+  caseId            String
+  criterionId       String
+  documentId        String
+  pageNumber        Int
+  quote             String
+  normalizedSummary String
+  confidence        Float
+  reviewerStatus    String    @default("AI_DRAFT")
+  reviewerNote      String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  case              AuthCase  @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  criterion         Criterion @relation(fields: [criterionId], references: [id], onDelete: Cascade)
+  document          Document  @relation(fields: [documentId], references: [id])
+
+  @@index([caseId])
+  @@index([criterionId])
+  @@index([documentId])
+  @@index([reviewerStatus])
+}
+
+model EvidenceGap {
+  id             String    @id
+  caseId         String
+  criterionId    String
+  gapText        String
+  whyNeeded      String?
+  suggestedOwner String?
+  priority       String    @default("medium")
+  resolvedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  case           AuthCase  @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  criterion      Criterion @relation(fields: [criterionId], references: [id], onDelete: Cascade)
+
+  @@index([caseId])
+  @@index([criterionId])
+}
+
+model PacketVersion {
+  id             String    @id
+  caseId         String
+  versionNumber  Int
+  status         String    @default("AI_DRAFT")
+  packetMarkdown String
+  pdfStorageKey  String?
+  generatedBy    String?
+  approvedBy     String?
+  approvedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  case           AuthCase  @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  @@unique([caseId, versionNumber])
+  @@index([caseId])
+}
+
+model CommunicationLog {
+  id                 String    @id
+  caseId             String
+  channel            String
+  destination        String?
+  sentAt             DateTime?
+  confirmationNumber String?
+  notes              String?
+  createdAt          DateTime  @default(now())
+  case               AuthCase  @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  @@index([caseId])
+}
+
+model AppealOutcome {
+  id                 String    @id
+  caseId             String
+  outcome            String
+  decisionDate       DateTime?
+  approvedDays       Int?
+  denialUpheldReason String?
+  notes              String?
+  createdAt          DateTime  @default(now())
+  case               AuthCase  @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  @@index([caseId])
+}
+
+model AuditEvent {
+  id             String       @id
+  organizationId String
+  userId         String?
+  action         String
+  subjectType    String
+  subjectId      String
+  ipAddress      String?
+  userAgent      String?
+  metadata       String?
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  user           User?        @relation(fields: [userId], references: [id])
+
+  @@index([organizationId])
+  @@index([userId])
+  @@index([subjectType, subjectId])
+  @@index([createdAt])
+}

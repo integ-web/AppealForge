@@ -1,0 +1,12 @@
+Harbor MA Complete
+Notice of Denial of Medical Coverage
+
+Member: Synthetic Patient A
+Service requested: Skilled Nursing Facility admission
+Date of notice: 2026-06-22
+
+We have denied the request for Skilled Nursing Facility admission because the documentation submitted does not show that the member meets skilled level of care. The information reviewed indicates that the member's needs could be managed at a lower level of care.
+
+You or your authorized representative may request reconsideration. Your request must be filed within the timeframe stated in your Evidence of Coverage. If waiting for a standard decision could seriously jeopardize the member's life, health, or ability to regain maximum function, you may request an expedited reconsideration.
+
+This synthetic letter is for demo use only and contains no real PHI.
