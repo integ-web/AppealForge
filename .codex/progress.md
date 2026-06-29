@@ -15,10 +15,14 @@
 - Added README, demo script, and safety guardrails docs.
 - Ran final verification sweep: lint, typecheck, unit tests, and production build pass.
 - Added completion pass: real draft packet download API, scrubbed audit API, interactive upload simulation, local packet approval/version-history controls, and interactive outcome save state.
+- Added operator-demo export pass: print-ready HTML packet export with warm paper styling, citation guard status, exact quotes, evidence table, gaps, attachment index, and physician attestation placeholder.
+- Cleaned README duplicate local notes and updated demo script to showcase the print-ready export.
+- Added unit coverage for HTML packet export.
 
 ## Remaining Items
 - Optional: resolve local Prisma schema-engine failure for SQLite migration in this sandbox.
 - Optional: rerun Playwright in an environment where the dev server can be managed reliably by the test runner.
+- Optional: commit and push this follow-up export polish pass.
 
 ## Known Issues
 - `npm install` needed `--ignore-scripts` after a postinstall stall; explicit Prisma generation succeeded after engine download approval.
@@ -28,17 +32,17 @@
 - `npm run test:e2e` discovers the Playwright flow but cannot launch Chromium because the Playwright browser binary is missing. `playwright install chromium` was attempted with approval and timed out before completing.
 
 ## Test Status
-- `npm run lint`: pass after completion pass.
-- `npm run typecheck`: pass after completion pass.
-- `npm run test`: pass, 10 unit tests after completion pass.
-- `npm run build`: pass after completion pass.
+- `npm run lint`: pass after export polish pass.
+- `npm run typecheck`: pass after export polish pass.
+- `npm run test`: pass, 11 unit tests after export polish pass.
+- `npm run build`: pass after export polish pass.
 - `npm run db:generate`: pass after approved engine download.
 - `prisma validate`: pass.
 - `prisma migrate dev` / `prisma db push`: blocked by schema-engine error.
 - `npm run test:e2e`: blocked by missing Playwright Chromium browser binary; spec exists and server responds on `/login`.
 
 ## Design Polish Status
-- Premium Midnight Clinical Atelier pass complete across login, command dashboard, evidence map, packet paper, admin, and audit.
+- Premium Midnight Clinical Atelier pass complete across login, command dashboard, evidence map, packet paper, admin, audit, and print-ready packet export.
 
 ## Next Actions
 - Dev server is running at `http://127.0.0.1:3000/login`.

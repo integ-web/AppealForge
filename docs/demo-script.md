@@ -11,6 +11,6 @@
 9. Open the missing evidence checklist and explain that missing evidence becomes a task, never invented text.
 10. Generate the packet and show the split editor plus warm paper preview.
 11. Point out citation chips, the draft watermark, and unsupported claim warning panel.
-12. Open export workflow and explain that approved export is locked until human approval.
+12. Open export workflow and launch the print-ready HTML packet; point out the draft watermark, citation guard status, evidence table, gaps, attachment index, and physician attestation placeholder.
 13. Open outcome tracker and show communication log plus response tracking.
 14. Open audit log and admin settings to show scrubbed sensitive action metadata and production hardening placeholders.

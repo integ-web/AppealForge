@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getCaseBundle } from "../../lib/demo-data";
-import { blockUnsupportedClaims, generatePacketMarkdown } from "../../lib/packets/generate";
+import { blockUnsupportedClaims, generatePacketHtml, generatePacketMarkdown } from "../../lib/packets/generate";
 
 describe("packet generation guardrails", () => {
   it("blocks uncited clinical assertions", () => {
@@ -28,6 +28,25 @@ describe("packet generation guardrails", () => {
     expect(packet.markdown).toContain("[EV-ev_a_iv]");
     expect(packet.markdown).toContain("Physician Attestation Placeholder");
     expect(packet.markdown).not.toContain("[EV-ev_a_dressing]");
+    expect(packet.claimAudit.ok).toBe(true);
+  });
+
+  it("generates print-ready html with citations, exact quotes, and draft status", () => {
+    const bundle = getCaseBundle("case_snf_admission_001");
+    expect(bundle).toBeTruthy();
+    const packet = generatePacketHtml({
+      ...bundle!,
+      generatedBy: "Maya Patel",
+      versionNumber: 2,
+      exportedAt: "2026-06-25T12:00:00.000Z"
+    });
+
+    expect(packet.html).toContain("<!doctype html>");
+    expect(packet.html).toContain("DRAFT - Human Approval Required");
+    expect(packet.html).toContain("EV-ev_a_iv");
+    expect(packet.html).toContain("Patient requires IV cefazolin every 8 hours");
+    expect(packet.html).toContain("Physician Attestation Placeholder");
+    expect(packet.html).not.toContain("EV-ev_a_dressing");
     expect(packet.claimAudit.ok).toBe(true);
   });
 });

@@ -27,8 +27,6 @@ AppealForge PAC is a local, synthetic demo of a post-acute Medicare Advantage de
 npm install
 copy .env.example .env
 npm run db:generate
-npm run db:migrate
-npm run db:seed
 npm run dev
 ```
 
@@ -41,30 +39,32 @@ Demo login:
 
 The demo session is local and deterministic; the login form links into the seeded workspace.
 
+## Stable Preview
+
+For a steadier demo than `next dev`, build once and run preview:
+
+```bash
+npm run build
+npm run preview
+```
+
+Then open [http://127.0.0.1:3000/login](http://127.0.0.1:3000/login).
+
 ## Checks
 
 ```bash
 npm run lint
 npm run typecheck
 npm run test
+npm run build
 npm run test:e2e
 ```
 
-Playwright may require browser installation in fresh environments.
+Playwright may require browser installation in fresh environments:
 
-## Local Notes From This Workspace
-
-- `npm run db:generate` succeeded after Prisma downloaded its Windows engine binary.
-- `prisma migrate dev` and `prisma db push` currently fail in this sandbox with an empty Prisma schema-engine error even though `prisma validate` passes. The app itself does not depend on the database at runtime; it uses deterministic seeded demo data from `lib/demo-data.ts`.
-- `npm run build` passes. Next reports non-fatal lockfile patch warnings because network access is restricted for SWC lockfile metadata.
-- The Playwright spec is checked in at `tests/e2e/demo-flow.spec.ts`; in this sandbox it is blocked because the Playwright Chromium binary is missing. `playwright install chromium` was attempted but timed out before the browser finished downloading.
-
-## Local Notes From This Workspace
-
-- `npm run db:generate` succeeded after Prisma downloaded its Windows engine binary.
-- `prisma migrate dev` and `prisma db push` currently fail in this sandbox with an empty Prisma schema-engine error even though `prisma validate` passes. The app itself does not depend on the database at runtime; it uses deterministic seeded demo data from `lib/demo-data.ts`.
-- `npm run build` passes. Next reports non-fatal lockfile patch warnings because network access is restricted for SWC lockfile metadata.
-- The Playwright spec is checked in at `tests/e2e/demo-flow.spec.ts`; in this sandbox it is blocked because the Playwright Chromium binary is missing. `playwright install chromium` was attempted but timed out before the browser finished downloading.
+```bash
+npx playwright install chromium
+```
 
 ## Seeded Data
 
@@ -78,7 +78,20 @@ Each case includes denial findings, criteria, documents, extracted pages, eviden
 
 ## Export
 
-The local demo implements a Markdown/HTML-style packet export workflow. PDF export is documented as the production path, but the fallback is intentional for local reliability.
+The local demo supports two deterministic export paths:
+
+- Print-ready HTML packet at `/api/cases/:caseId/packet/export/html`
+- Draft Markdown packet at `/api/cases/:caseId/packet/export`
+
+Both export paths run the same citation guard. PDF export is the production path, but print-ready HTML is the local fallback for reliable buyer demos.
+
+## Local Notes From This Workspace
+
+- `npm run db:generate` succeeded after Prisma downloaded its Windows engine binary.
+- `prisma validate` passes.
+- `prisma migrate dev` and `prisma db push` currently fail in this sandbox with an empty Prisma schema-engine error even though the schema is valid. The app does not depend on the database at runtime; it uses deterministic seeded demo data from `lib/demo-data.ts`.
+- `npm run build` passes. Next reports non-fatal lockfile patch warnings because network access is restricted for SWC lockfile metadata.
+- `npm run test:e2e` discovers the Playwright flow but is blocked in this sandbox because the Playwright Chromium binary is missing. `playwright install chromium` was attempted and timed out.
 
 ## PostgreSQL Switch
 

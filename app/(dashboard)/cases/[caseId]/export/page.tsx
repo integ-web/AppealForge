@@ -23,10 +23,20 @@ export default async function ExportPage({ params }: { params: Promise<{ caseId:
             <StatusPill tone="amber">{latest.status.replaceAll("_", " ")}</StatusPill>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
-            <ExportOption title="Draft Markdown export" description="Creates a reviewable packet file with draft watermark and citation table." enabled />
+            <ExportOption
+              title="Print-ready HTML packet"
+              description="Opens a warm paper packet with citation guard status, evidence table, gaps, and attestation placeholder."
+              enabled
+              href={`/api/cases/${caseId}/packet/export/html`}
+            />
+            <ExportOption
+              title="Draft Markdown export"
+              description="Downloads a reviewable source packet for internal editing and version comparison."
+              enabled
+              href={`/api/cases/${caseId}/packet/export`}
+            />
             <ExportOption title="Approved export" description="Locked until physician approval is recorded." enabled={false} />
-            <ExportOption title="Include evidence table" description="Selected by default; every row includes page and quote." enabled />
-            <ExportOption title="Include attachment index" description="Selected by default for packet completeness." enabled />
+            <ExportOption title="PDF export" description="Production path; local demo uses print-ready HTML until PDF service is configured." enabled={false} />
           </div>
           <div className="mt-5">
             <AlertLine>Approved export requires human approval. Draft exports remain clearly marked DRAFT.</AlertLine>
@@ -49,7 +59,7 @@ export default async function ExportPage({ params }: { params: Promise<{ caseId:
   );
 }
 
-function ExportOption({ title, description, enabled }: { title: string; description: string; enabled: boolean }) {
+function ExportOption({ title, description, enabled, href }: { title: string; description: string; enabled: boolean; href?: string }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
       <div className="flex items-center justify-between gap-3">
@@ -59,10 +69,17 @@ function ExportOption({ title, description, enabled }: { title: string; descript
         </span>
       </div>
       <p className="mt-2 text-sm leading-6 text-slate-300">{description}</p>
-      <button disabled={!enabled} className="mt-4 rounded-full bg-teal-500 px-4 py-2 text-sm font-bold text-ink-950 disabled:cursor-not-allowed disabled:bg-slate-500">
-        <Download className="mr-2 inline h-4 w-4" />
-        Export
-      </button>
+      {enabled && href ? (
+        <a href={href} className="mt-4 inline-flex rounded-full bg-teal-500 px-4 py-2 text-sm font-bold text-ink-950 af-focus">
+          <Download className="mr-2 h-4 w-4" />
+          Export
+        </a>
+      ) : (
+        <button disabled className="mt-4 rounded-full bg-slate-500 px-4 py-2 text-sm font-bold text-ink-950 disabled:cursor-not-allowed">
+          <Download className="mr-2 inline h-4 w-4" />
+          Locked
+        </button>
+      )}
     </div>
   );
 }
